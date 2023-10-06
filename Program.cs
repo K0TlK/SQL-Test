@@ -7,35 +7,38 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-string connectionString = configuration.GetConnectionString("DefaultConnection");
+string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
-var options = new DbContextOptionsBuilder<AEXSoftDbContext>()
+if (connectionString != null)
+{
+    var options = new DbContextOptionsBuilder<AEXSoftDbContext>()
     .UseSqlServer(connectionString)
     .Options;
 
-using (var context = new AEXSoftDbContext(options))
-{
-    List<Customer> customers = context.Customer.ToList();
-
-    foreach (var customer in customers)
+    using (var context = new AEXSoftDbContext(options))
     {
-        Console.WriteLine($"ID: {customer.ID}, Name: {customer.Name}");
+        List<Customer> customers = context.Customer.ToList();
+
+        foreach (var customer in customers)
+        {
+            Console.WriteLine($"ID: {customer.ID}, Name: {customer.Name}");
+        }
     }
-}
 
-Console.WriteLine();
+    Console.WriteLine();
 
-using (var context = new AEXSoftDbContext(options))
-{
-    DateTime beginDate = new DateTime(2023, 01, 01);
-    decimal sumAmount = 1000;
-
-    var customers = context.GetCustomers(beginDate, sumAmount);
-
-    foreach (var customer in customers)
+    using (var context = new AEXSoftDbContext(options))
     {
-        Console.WriteLine($"Customer: {customer.CustomerName}, Manager: {customer.ManagerName}, Amount: {customer.Amount}");
-    }
-}
+        DateTime beginDate = new DateTime(2023, 01, 01);
+        decimal sumAmount = 1000;
 
-Console.WriteLine();
+        var customers = context.GetCustomers(beginDate, sumAmount);
+
+        foreach (var customer in customers)
+        {
+            Console.WriteLine($"Customer: {customer.CustomerName}, Manager: {customer.ManagerName}, Amount: {customer.Amount}");
+        }
+    }
+
+    Console.WriteLine();
+}
