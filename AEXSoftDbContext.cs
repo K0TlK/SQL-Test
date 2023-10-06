@@ -5,9 +5,9 @@ namespace SQL_Test
 {
     public class AEXSoftDbContext : DbContext
     {
-        public DbSet<Customer> Customer { get; set; }
-        public DbSet<Manager> Manager { get; set; }
-        public DbSet<Order> CustomerOrder { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public AEXSoftDbContext(DbContextOptions<AEXSoftDbContext> options) : base(options)
         {
@@ -21,7 +21,7 @@ namespace SQL_Test
         /// <returns>A list of CustomerViewModel objects that meet the filtering criteria.</returns>
         public List<CustomerViewModel> GetCustomers(DateTime beginDate, decimal sumAmount)
         {
-            var customers = Customer
+            var customers = Customers
                 .Where(c => c.Orders != null && c.Orders.Any(o => o.Date >= beginDate))
                 .Select(c => new
                 {

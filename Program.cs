@@ -17,7 +17,7 @@ if (connectionString != null)
 
     using (var context = new AEXSoftDbContext(options))
     {
-        List<Customer> customers = context.Customer.ToList();
+        List<Customer> customers = context.Customers.ToList();
 
         foreach (var customer in customers)
         {
